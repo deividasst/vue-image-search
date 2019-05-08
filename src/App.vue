@@ -1,28 +1,68 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <h1>{{title}}</h1>
+    <form @submit.prevent="formSubmitted()">
+            <label for="searchTerm">Search Term</label>
+            <input
+              v-model="searchTerm"
+              class="u-full-width"
+              type="text"
+              id="searchTerm"
+              name="searchTerm" />
+            <button type="submit">Search</button> <br/>
+    </form>
+    <img v-if="loading" class="loading" src="https://i.imgur.com/RlS6YST.gif"/>
+    <section class="images">
+      <img v-for="image in images" :key="image.id" :src="image.urls.small">
+    </section>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import API from './API';
 
 export default {
   name: 'app',
-  components: {
-    HelloWorld
-  }
-}
+  data() {
+    return {
+      title: 'Vue.JS Image Search App',
+      searchTerm: '',
+      images: [],
+      loading: false
+    };
+  },
+  methods: {
+    formSubmitted() {
+      this.loading = true;
+      this.images = [];
+      API.search(this.searchTerm)
+        .then(images => {
+          this.images = images;
+          this.loading = false;
+        });
+    }
+  },
+};
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+body {
+  width: 80%;
+  margin: 2em auto 0 auto;
+}
+
+.images {
+  column-count: 3;
+}
+
+.loading {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 5%;
+}
+
+img {
+  width: 100%;
 }
 </style>
