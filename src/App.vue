@@ -11,9 +11,9 @@
               name="searchTerm" />
             <button type="submit">Search</button> <br/>
     </form>
-    <img v-if="loading" class="loading" src="https://i.imgur.com/RlS6YST.gif"/>
+    <img v-if="loading" class="loading" alt ="loadingGif" src="https://i.imgur.com/RlS6YST.gif"/>
     <section class="images">
-      <img v-for="image in images" :key="image.id" :src="image.urls.small">
+      <img v-for="image in images" :key="image.id" :alt="image.alt_description" :src="image.urls.small">
     </section>
   </div>
 </template>
